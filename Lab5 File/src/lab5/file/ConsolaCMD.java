@@ -109,10 +109,10 @@ public class ConsolaCMD extends JFrame {
         if (entrada.equalsIgnoreCase("dir")) {
             ejecutarDir();
 
-        } else if (entrada.equalsIgnoreCase("cd <..>")) {
+        } else if (entrada.equalsIgnoreCase("cd ...")) {
             ejecutarRegresar();
 
-        } else if (entrada.equals("<..>")) {
+        } else if (entrada.equals("...")) {
             ejecutarRegresar();
 
         } else if (entrada.toLowerCase().startsWith("cd ")) {
