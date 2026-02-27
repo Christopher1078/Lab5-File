@@ -1,4 +1,3 @@
-
 package lab5.file;
 
 import javax.swing.*;
@@ -14,9 +13,9 @@ public class ConsolaCMD extends JFrame {
     private JTextArea pantalla;
     private JTextField campoEntrada;
     private JButton btnEjecutar;
-
-    static final Color VERDE  = new Color(0, 255, 0);
-    static final Color BLANCO = new Color(255, 255, 255);
+    private JLabel etiquetaRuta;   
+    static final Color BLANCO  = new Color(0, 255, 0);
+    static final Color VERDE = new Color(255, 255, 255);
     static final Color NEGRO  = new Color(0, 0, 0);
 
     public ConsolaCMD() {
@@ -43,7 +42,7 @@ public class ConsolaCMD extends JFrame {
         panelInferior.setBackground(NEGRO);
         panelInferior.setBorder(BorderFactory.createEmptyBorder(5, 8, 8, 8));
 
-        JLabel etiquetaRuta = new JLabel(rutaActual + ">");
+        etiquetaRuta = new JLabel(rutaActual + ">");
         etiquetaRuta.setForeground(VERDE);
         etiquetaRuta.setFont(new Font("Consolas", Font.PLAIN, 14));
 
@@ -71,6 +70,7 @@ public class ConsolaCMD extends JFrame {
 
         btnEjecutar.addActionListener(e -> procesarComando());
         campoEntrada.addActionListener(e -> procesarComando());
+        getRootPane().setDefaultButton(btnEjecutar);
 
         mostrarTexto("Microsoft Windows [Version 10.0.22621.521]");
         mostrarTexto("(c) Microsoft Corporation. All rights reserved.\n");
@@ -95,6 +95,9 @@ public class ConsolaCMD extends JFrame {
         pantalla.setCaretPosition(pantalla.getDocument().getLength());
     }
 
+    void actualizarEtiquetaRuta() {
+        etiquetaRuta.setText(rutaActual + ">");
+    }
     void procesarComando() {
         String entrada = campoEntrada.getText().trim();
         campoEntrada.setText("");
@@ -106,11 +109,14 @@ public class ConsolaCMD extends JFrame {
         if (entrada.equalsIgnoreCase("dir")) {
             ejecutarDir();
 
+        } else if (entrada.equalsIgnoreCase("cd <..>")) {
+            ejecutarRegresar();
+
+        } else if (entrada.equals("<..>")) {
+            ejecutarRegresar();
+
         } else if (entrada.toLowerCase().startsWith("cd ")) {
             ejecutarCd(entrada.substring(3).trim());
-
-        } else if (entrada.equals("<...>")) {
-            ejecutarRegresar();
 
         } else if (entrada.equalsIgnoreCase("date")) {
             ejecutarDate();
@@ -141,7 +147,6 @@ public class ConsolaCMD extends JFrame {
         mostrarRuta();
     }
 
-
     void ejecutarDir() {
         File carpeta = new File(rutaActual);
         File[] contenido = carpeta.listFiles();
@@ -160,6 +165,7 @@ public class ConsolaCMD extends JFrame {
         File nueva = new File(rutaActual + File.separator + nombreCarpeta);
         if (nueva.exists() && nueva.isDirectory()) {
             rutaActual = nueva.getAbsolutePath();
+            actualizarEtiquetaRuta();
             mostrarTexto("Carpeta actual: " + rutaActual);
         } else {
             mostrarError("No se encontró la carpeta: " + nombreCarpeta);
@@ -170,6 +176,7 @@ public class ConsolaCMD extends JFrame {
         File padre = new File(rutaActual).getParentFile();
         if (padre != null) {
             rutaActual = padre.getAbsolutePath();
+            actualizarEtiquetaRuta();
             mostrarTexto("Regresaste a: " + rutaActual);
         } else {
             mostrarError("Ya estás en la raíz, no puedes regresar más.");
@@ -185,7 +192,6 @@ public class ConsolaCMD extends JFrame {
         LocalTime hora = LocalTime.now();
         mostrarTexto("Hora actual: " + hora.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
-
 
     void ejecutarMkdir(String nombre) {
         if (nombre.isEmpty()) { mostrarError("Debes ingresar un nombre para la carpeta."); return; }
