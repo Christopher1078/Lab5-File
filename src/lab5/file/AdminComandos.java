@@ -90,7 +90,7 @@ public class AdminComandos {
                     escritor.write(texto);
                     escritor.newLine();
                 }
-            }while(!texto.equalsIgnoreCase("EXIT"));
+            }while(!texto.equalsIgnoreCase("exit"));
         }
     }
     
