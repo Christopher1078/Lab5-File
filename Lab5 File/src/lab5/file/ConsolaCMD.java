@@ -3,14 +3,12 @@ package lab5.file;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.time.*;
 import java.time.format.*;
 
 public class ConsolaCMD extends JFrame {
 
-    // ── VARIABLES COMPARTIDAS ────────────────────────────────────────────
     static String rutaActual = System.getProperty("user.home");
 
     private JTextArea pantalla;
@@ -21,7 +19,6 @@ public class ConsolaCMD extends JFrame {
     static final Color BLANCO = new Color(255, 255, 255);
     static final Color NEGRO  = new Color(0, 0, 0);
 
-    // ── CONSTRUCTOR ──────────────────────────────────────────────────────
     public ConsolaCMD() {
         setTitle("Administrator: Command Prompt");
         setSize(750, 500);
@@ -83,7 +80,6 @@ public class ConsolaCMD extends JFrame {
         campoEntrada.requestFocus();
     }
 
-    // ── MÉTODOS DE INTERFAZ ──────────────────────────────────────────────
     void mostrarTexto(String texto) {
         pantalla.append(texto + "\n");
         pantalla.setCaretPosition(pantalla.getDocument().getLength());
@@ -99,7 +95,6 @@ public class ConsolaCMD extends JFrame {
         pantalla.setCaretPosition(pantalla.getDocument().getLength());
     }
 
-    // ── PROCESADOR DE COMANDOS ───────────────────────────────────────────
     void procesarComando() {
         String entrada = campoEntrada.getText().trim();
         campoEntrada.setText("");
@@ -146,7 +141,6 @@ public class ConsolaCMD extends JFrame {
         mostrarRuta();
     }
 
-    // ── MÉTODOS PERSONA 1 - NAVEGACIÓN ──────────────────────────────────
 
     void ejecutarDir() {
         File carpeta = new File(rutaActual);
@@ -192,7 +186,6 @@ public class ConsolaCMD extends JFrame {
         mostrarTexto("Hora actual: " + hora.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
 
-    // ── MÉTODOS PERSONA 2 - GESTIÓN DE ARCHIVOS ──────────────────────────
 
     void ejecutarMkdir(String nombre) {
         if (nombre.isEmpty()) { mostrarError("Debes ingresar un nombre para la carpeta."); return; }
@@ -235,7 +228,6 @@ public class ConsolaCMD extends JFrame {
         }
     }
 
-    // ── MÉTODOS PERSONA 3 - LECTURA Y ESCRITURA ──────────────────────────
 
     void ejecutarWr(String nombreArchivo) {
         if (nombreArchivo.isEmpty()) { mostrarError("Ejemplo: Wr notas.txt"); return; }
@@ -300,7 +292,6 @@ public class ConsolaCMD extends JFrame {
         } catch (IOException e) { mostrarError("Error al leer: " + e.getMessage()); }
     }
 
-    // ── MAIN ─────────────────────────────────────────────────────────────
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new ConsolaCMD());
     }
