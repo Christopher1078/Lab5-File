@@ -262,7 +262,11 @@ public class ConsolaCMD extends JFrame {
         if (resultado == JOptionPane.OK_OPTION) {
             String contenido = areaEscritura.getText();
             int indexExit = contenido.indexOf("EXIT");
-            if (indexExit != -1) contenido = contenido.substring(0, indexExit);
+           if(indexExit == -1){
+               mostrarError("Debes escribir EXIT al final del texto para guardar");
+               return; 
+           }
+           contenido = contenido.substring(0, indexExit); 
             try {
                 FileWriter fw = new FileWriter(archivo, true);
                 fw.write(contenido);
